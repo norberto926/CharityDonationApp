@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+Register
+{% endblock %}
+{% block header_class %} {% endblock %}
+{% block register_highlight %}btn--without-border{% endblock %}
+{% block donation_list_element %} {% endblock %}
+{% block slogan %}
+{% endblock %}
+{% block content %}
+    <section class="login-page">
+      <h2>Załóż konto</h2>
+      <form method="post">
+        {% csrf_token %}
+{#          {{ form }}#}
+          {% for input in form %}
+          <div class="form-group">
+            {{ input }}
+          </div>
+        {% endfor %}
+{#        <div class="form-group">#}
+{#            {{form.first_name}}#}
+{#        </div>#}
+{#         <div class="form-group">#}
+{#          {{form.last_name}}#}
+{#        </div>#}
+{#        <div class="form-group">#}
+{#           {{form.email}}#}
+{#        </div>#}
+{#        <div class="form-group">#}
+{#           {{form.password1}}#}
+{#        </div>#}
+{#        <div class="form-group">#}
+{#          {{ form.password2 }}#}
+{#        </div>#}
+
+        <div class="form-group form-group--buttons">
+          <a href="/login" class="btn btn--without-border">Zaloguj się</a>
+          <button class="btn" type="submit">Załóż konto</button>
+        </div>
+      </form>
+    </section>
+{% endblock %}
