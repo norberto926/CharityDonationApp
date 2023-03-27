@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+User account
+{% endblock %}
+{% block slogan %}
+{% endblock %}
+{% block content %}
+<h1>
+{{ user.first_name }}
+{{ user.last_name }}
+{{ user.email }}
+</h1>
+<h1>Twoje dary:</h1>
+<ul>
+{% for donation in user_donations %}
+    {% if not donation.is_taken %}
+    <li style="font-size: large">
+    {% else %}
+    <li style="font-size: large; color: darkred">
+    {% endif %}
+    <div>Ilość worków: {{ donation.quantity }}</div>
+    <div>Wsparta organizacja: {{ donation.institution }}</div>
+    <div>Kategorie:
+        {% for categorie in donation.categories.all %}
+            {% if forloop.last %}
+            {{ categorie.name}}
+            {% else %}
+            {{ categorie.name }},
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div>Data przekazania: {{ donation.pick_up_date }}</div>
+    {% if not donation.is_taken %}
+    <button><a href="/archive_donation/{{ donation.id }}">Archive</a></button>
+    {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

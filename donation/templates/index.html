@@ -92,13 +92,12 @@ Landing Page
           </li>
             {% endfor %}
         </ul>
-        <!-- Pagination
+        <!-- Pagination -->
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
+            {% for i in foundations.paginator %}
+                <a href="/?page={{ forloop.counter }}#help" class="btn btn--small btn--without-border active" data-page="{{ forloop.counter }}">{{ forloop.counter }}</a>
+            {% endfor %}
         </ul>
-        -->
       </div>
 
 
@@ -129,15 +128,12 @@ Landing Page
             {% endfor %}
         </ul>
 
-        <!-- Pagination
+        <!-- Pagination -->
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
+            {% for i in non_gov_orgs.paginator.pagerange %}
+                <a href="/?page={{ forloop.counter }}#help" class="btn btn--small btn--without-border active" data-page="{{ i }}">{{ i }}</a>
+            {% endfor %}
         </ul>
-        -->
       </div>
 
       <!-- SLIDE 3 -->
@@ -164,12 +160,12 @@ Landing Page
             {% endfor %}
         </ul>
 
-        <!-- Pagination
+        <!-- Pagination -->
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
+            {% for i in local_fundraisers.paginator %}
+                <a href="/?page={{ forloop.counter }}#help" class="btn btn--small btn--without-border active" data-page="{{ forloop.counter }}">{{ forloop.counter }}</a>
+            {% endfor %}
         </ul>
-        -->
       </div>
     </section>
 {% endblock %}

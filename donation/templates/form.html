@@ -32,21 +32,23 @@ Donation form
       <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/5</div>
 
-        <form action="form-confirmation.html" method="post">
+        <form action="#" method="POST">
+        {% csrf_token %}
           <!-- STEP 1: class .active is switching steps -->
           <div data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
-            {% for category in categories %}
-            <div class="form-group form-group--checkbox">
+            {% for category in form.categories%}
+            <div class="form-group form-group--checkbox category-div">
               <label>
-                <input
-                  type="checkbox"
-                  name="categories"
-                  value="{{ category.id }}"
-                />
+                  {{ category.tag }}
+{#                <input#}
+{#                  type="checkbox"#}
+{#                  name="categories"#}
+{#                  value="{{ category.id }}"#}
+{#                />#}
                 <span class="checkbox"></span>
-                <span class="description"
-                  >{{ category.name }}</span
+                <span class="description category-name"
+                  >{{ category.choice_label }}</span
                 >
               </label>
             </div>
@@ -66,7 +68,8 @@ Donation form
             <div class="form-group form-group--inline">
               <label>
                 Liczba 60l worków:
-                <input type="number" name="bags" step="1" min="1" />
+{#                  <input type="number" name="bags" step="1" min="1"/>#}
+                  {{ form.quantity }}
               </label>
             </div>
 
@@ -81,10 +84,10 @@ Donation form
           <!-- STEP 4 -->
           <div data-step="3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-            {% for institution in institutions %}
-            <div class="form-group form-group--checkbox">
+            {% for institution in form.institution.field.queryset %}
+            <div class="form-group form-group--checkbox institution-div" data-categories="{% for cat in institution.categories.all %}{% if not forloop.last %}{{ cat.id }},{% else %}{{ cat.id }}{% endif %}{% endfor %}">
               <label>
-                <input type="radio" name="organization" value="old" />
+                <input type="radio" name="institution" value="{{ institution.pk }}" />
                 <span class="checkbox radio"></span>
                 <span class="description">
                   <div class="title">{{ institution.name }}</div>
@@ -109,22 +112,33 @@ Donation form
               <div class="form-section--column">
                 <h4>Adres odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Ulica <input type="text" name="address" /> </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label> Miasto <input type="text" name="city" /> </label>
-                </div>
-
-                <div class="form-group form-group--inline">
-                  <label>
-                    Kod pocztowy <input type="text" name="postcode" />
+                  <label> Ulica
+{#                      <input type="text" name="address" /> #}
+                      {{ form.address }}
                   </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
-                    Numer telefonu <input type="phone" name="phone" />
+                      Miasto
+{#                      <input type="text" name="city" />#}
+                      {{ form.city }}
+                  </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label>
+                    Kod pocztowy
+{#                      <input type="text" name="postcode"/>#}
+                      {{ form.zip_code }}
+                  </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label>
+                    Numer telefonu
+{#                      <input type="phone" name="phone" />#}
+                      {{ form.phone_number }}
                   </label>
                 </div>
               </div>
@@ -132,24 +146,31 @@ Donation form
               <div class="form-section--column">
                 <h4>Termin odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Data <input type="date" name="data" /> </label>
+                  <label> Data
+{#                      <input type="date" name="data" /> #}
+                      {{ form.pick_up_date }}
+                  </label>
                 </div>
 
                 <div class="form-group form-group--inline">
-                  <label> Godzina <input type="time" name="time" /> </label>
+                  <label> Godzina
+{#                      <input type="time" name="time" /> #}
+                      {{ form.pick_up_time }}
+                  </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
                     Uwagi dla kuriera
-                    <textarea name="more_info" rows="5"></textarea>
+{#                    <textarea name="more_info" rows="5"></textarea>#}
+                      {{ form.pick_up_comment }}
                   </label>
                 </div>
               </div>
             </div>
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="button" class="btn next-step">Dalej</button>
+              <button type="button" class="btn next-step" id="summary">Dalej</button>
             </div>
           </div>
 
@@ -163,14 +184,14 @@ Donation form
                 <ul>
                   <li>
                     <span class="icon icon-bag"></span>
-                    <span class="summary--text"
+                    <span class="summary--text" id="summary-bags"
                       >4 worki ubrań w dobrym stanie dla dzieci</span
                     >
                   </li>
 
                   <li>
                     <span class="icon icon-hand"></span>
-                    <span class="summary--text"
+                    <span class="summary--text" id="summary-institution"
                       >Dla fundacji "Mam marzenie" w Warszawie</span
                     >
                   </li>
@@ -181,19 +202,19 @@ Donation form
                 <div class="form-section--column">
                   <h4>Adres odbioru:</h4>
                   <ul>
-                    <li>Prosta 51</li>
-                    <li>Warszawa</li>
-                    <li>99-098</li>
-                    <li>123 456 789</li>
+                    <li id="summary-street">Prosta 51</li>
+                    <li id="summary-city">Warszawa</li>
+                    <li id="summary-zip-code">99-098</li>
+                    <li id="summary-phone">123 456 789</li>
                   </ul>
                 </div>
 
                 <div class="form-section--column">
                   <h4>Termin odbioru:</h4>
                   <ul>
-                    <li>13/12/2018</li>
-                    <li>15:40</li>
-                    <li>Brak uwag</li>
+                    <li id="summary-pick-up-date">13/12/2018</li>
+                    <li id="summary-pick-up-time">15:40</li>
+                    <li id="summary-pick-up-comment">Brak uwag</li>
                   </ul>
                 </div>
               </div>

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'donation'
+    'donation',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,7 @@ WSGI_APPLICATION = 'Portfolio_lab.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'charity_donation_database',
+        'NAME': 'charity_donation_database2',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',
         'HOST': 'localhost',
@@ -126,3 +127,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'donation.User'
+
+PHONENUMBER_DEFAULT_REGION = 'PL'

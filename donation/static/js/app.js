@@ -243,7 +243,9 @@ document.addEventListener("DOMContentLoaded", function() {
      * TODO: validation, send data to server
      */
     submit(e) {
+      if(this.currentStep < 5){
       e.preventDefault();
+      }
       this.currentStep++;
       this.updateForm();
     }
@@ -256,7 +258,91 @@ document.addEventListener("DOMContentLoaded", function() {
 
 /* Filtering organizations */
 
-nextButton = document.getElementById('organization_filter')
-nextButton.addEventListener('click', function (){
-
+nextButtonOrganizationFiltering = document.getElementById('organization_filter')
+nextButtonOrganizationFiltering.addEventListener('click', function (){
+  const listOfCategories = createListOfCategories()
+  const institutionDivs = document.getElementsByClassName('institution-div')
+  for(let i=0; i < institutionDivs.length; i++){
+    institutionDivs[i].style.display = 'block'
+    const institutionCategories = institutionDivs[i].dataset.categories.split(',')
+    for(let j=0; j < listOfCategories.length; j++){
+      if(!(institutionCategories.includes(listOfCategories[j]))){
+        institutionDivs[i].style.display = 'none'
+      }
+    }
+  }
 })
+
+
+function createListOfCategories() {
+  let listOfCategories = []
+  const checkboxes = document.querySelectorAll("[name='categories']");
+  for(let i=0; i < checkboxes.length; i++){
+    if(checkboxes[i].checked === true){
+      listOfCategories.push(checkboxes[i].value)
+    }
+  }
+  return listOfCategories
+}
+
+/* Creeating Summary */
+
+function createCategoryNamesString() {
+  let categoryNamesString = ""
+  const categoryDivs = document.getElementsByClassName('category-div')
+  // const checkboxes = document.querySelectorAll("[name='categories']");
+  for(let i=0; i < categoryDivs.length; i++){
+    const checkbox = categoryDivs[i].querySelector("[name='categories']")
+    if(checkbox.checked === true){
+      const categoryName = categoryDivs[i].getElementsByClassName('category-name')[0].innerText
+      categoryNamesString += categoryName + ', '
+    }
+  }
+  return categoryNamesString
+}
+
+function createInstitutionName(){
+const institutionDivs = document.getElementsByClassName('institution-div')
+  for(let i=0; i < institutionDivs.length; i++){
+    const checkbox = institutionDivs[i].firstElementChild.querySelector("[name='institution']")
+    if(checkbox.checked === true){
+      const descriptionSpan = institutionDivs[i].getElementsByClassName('description')[0]
+      return descriptionSpan.firstElementChild.innerText
+
+    }
+}}
+
+const nextButtonSummary = document.getElementById('summary')
+nextButtonSummary.addEventListener('click', function (){
+  const bags = document.querySelector("[name='quantity']").value
+  const categoryNamesString = createCategoryNamesString()
+  const summaryBags = document.getElementById('summary-bags')
+  summaryBags.innerText = `${bags} worki ${categoryNamesString}`
+  const institutionName = createInstitutionName()
+  const summaryInstitution = document.getElementById('summary-institution')
+  summaryInstitution.innerText = institutionName
+  const summaryStreet = document.getElementById('summary-street')
+  const address = document.querySelector("[name='address']").value
+  summaryStreet.innerText = address
+  const summaryCity = document.getElementById('summary-city')
+  const city = document.querySelector("[name='city']").value
+  summaryCity.innerText = city
+  const summaryZipCode = document.getElementById('summary-zip-code')
+  const zipCode = document.querySelector("[name='zip_code']").value
+  summaryZipCode.innerText = zipCode
+  const summaryPhone = document.getElementById('summary-phone')
+  const phone = document.querySelector("[name='phone_number']").value
+  summaryPhone.innerText = phone
+  const summaryDate = document.getElementById('summary-pick-up-date')
+  const date = document.querySelector("[name='pick_up_date']").value
+  summaryDate.innerText = date
+  const summaryTime = document.getElementById('summary-pick-up-time')
+  const time = document.querySelector("[name='pick_up_time']").value
+  summaryTime.innerText = time
+  const summaryComment = document.getElementById('summary-pick-up-comment')
+  const comment = document.querySelector("[name='pick_up_comment']").value
+  summaryComment.innerText = comment
+})
+
+
+

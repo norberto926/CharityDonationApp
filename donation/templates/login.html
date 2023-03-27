@@ -24,8 +24,15 @@ Login
           <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
         </div>
         {% if form.errors %}
-        <p>Nieprawidłowy email lub hasło</p>
+        <p>{{ form.errors }}</p>
         {% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
         <div class="form-group form-group--buttons">
           <a href="/register" class="btn btn--without-border">Załóż konto</a>
           <button class="btn" type="submit">Zaloguj się</button> 

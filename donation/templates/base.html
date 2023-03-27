@@ -22,8 +22,11 @@
             <li class="logged-user">
             Witaj {{ user.first_name }}
             <ul class="dropdown">
-              <li><a href="#">Profil</a></li>
-              <li><a href="#">Ustawienia</a></li>
+              <li><a href="/user_details">Profil</a></li>
+              <li><a href="/edit_user">Ustawienia</a></li>
+                {% if user.is_superuser %}
+              <li><a href="/admin">Panel administracyjny</a></li>
+                {% endif %}
               <li><a href="/logout">Wyloguj</a></li>
             </ul>
           </li>
